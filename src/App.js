@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import TableFunc from "./comp/tbl/tbl";
+import TableFunc from "./comp/tbl/tblFunc";
 import TblClass from "./comp/tbl/tblClass";
 
 function App() {

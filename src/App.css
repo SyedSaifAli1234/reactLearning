@@ -5,6 +5,7 @@
 table{
   table-layout: fixed;
   width: 100%;
+  border-spacing: 30px;
   text-align: center;
   border-collapse: collapse;
   border: 3px solid purple;

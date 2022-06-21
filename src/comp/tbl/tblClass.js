@@ -23,7 +23,6 @@ class TblClass extends Component {
                         <td>{obj.symbol}</td>
                         <td>{obj.priceChange}</td>
                         <td>{obj.count}</td>
-
                     </tr>
                 ))
         );

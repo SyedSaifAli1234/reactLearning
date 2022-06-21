@@ -10,10 +10,18 @@ const TableFunc = () => {
             .then(data => setArr(data.slice(0,3)))
     },[])
 
+
+    function fetchStuff() {
+        let tblData = document.getElementById("tbl");
+        let lastRow = tblData.rows.length - 1;
+
+
+    }
+
     return(
         <>
             <h1>Functional Component</h1>
-            <table>
+            <table id="tbl" onClick={fetchStuff}>
                 <tbody>
                 <tr>
                     <th>Index</th>
@@ -23,7 +31,7 @@ const TableFunc = () => {
                 </tr>
                 {
                     arr.map((obj, index) => (
-                        <tr>
+                        <tr key={index}>
                             <td>{index}</td>
                             <td>{obj.symbol}</td>
                             <td>{obj.priceChange}</td>
@@ -33,6 +41,14 @@ const TableFunc = () => {
                 }
                 </tbody>
             </table>
+            {/*<br/>*/}
+            {/*<div>*/}
+            {/*    Symbol : <input type={"text"} id={"txt"}/>*/}
+            {/*    <input type="button" value={"Submit"}/>*/}
+            {/*    {*/}
+
+            {/*    }*/}
+            {/*</div>*/}
         </>
     )
 
