@@ -2,6 +2,21 @@
   text-align: center;
 }
 
+table{
+  table-layout: fixed;
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  border: 3px solid purple;
+}
+
+td {
+  padding: 10px 0;     /* 10px top & bottom padding, 0px left & right */
+  border-width: 1px 0; /*  1px top & bottom border,  0px left & right */
+  border-color: #000;
+  border-style: solid;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
