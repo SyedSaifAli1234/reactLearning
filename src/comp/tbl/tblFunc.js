@@ -4,39 +4,53 @@ const TableFunc = () => {
 
     const [completeData, setCompleteData] = useState([]);
     const [data, setData] = useState([]);
-    const [symblData, setSymblData] = useState(null);
-    const [textField, setTextField] = useState("");
+    const [text, setText] = useState("");
+    const [symbolData, setSymbolData] = useState("");
+
 
     useEffect(()=>{
+        fetchFirst();
+    },[]);
+
+    useEffect(()=>{
+        sliceIt();
+    },[completeData]);
+
+
+
+    const fetchFirst =()=> {
         fetch("https://api2.binance.com/api/v3/ticker/24hr")
-            .then(resp => resp.json())
-            .then((data) => {
-                setCompleteData(data);
-            });
-    },[])
+            .then(resp=>resp.json())
+            .then(data=>{
+                    setCompleteData(data);
+                }
+            )
+    }
+    const sliceIt =(flag)=>{
+        let getTable = document.querySelector("table");
+        let lastRow = getTable.rows.length-1;
+        flag?setData(completeData.slice(0,lastRow+3)):setData(completeData.slice(0,3));
+    }
+    const fetchItAgain =()=> {
+        sliceIt(true);
+    }
 
-    useEffect(() => {
-        fetchStuff();
-    }, [completeData])
 
-    function fetchStuff() {
-        let tblData = document.getElementById("tbl");
-        let lastRow = tblData.rows.length - 1;
-        if(lastRow == null || lastRow == undefined || lastRow == 0){
-            setData(completeData.slice(0,3));
-        }
-        else{
-            setData(completeData.slice(0, lastRow+3));
+    function updateField() {
+        if(document.getElementById("txtField").value != null){
+            setText(document.getElementById("txtField").value);
         }
     }
 
-    const fetchSymbol = () =>{
+    function fetchSymbol() {
         var url = "https://api2.binance.com/api/v3/ticker/24hr?symbol=";
-        if(textField != ""){
-            url = url+textField;
+        if(text!=""){
+            url = url+text;
             fetch(url)
-                .then(resp => resp.json())
-                .then(data => setSymblData(data));
+                .then(resp=>resp.json())
+                .then(data=>{
+                    setSymbolData(data);
+                })
         }
     }
 
@@ -45,46 +59,39 @@ const TableFunc = () => {
             <h1>Functional Component</h1>
             <table id="tbl">
                 <tbody>
-                <tr>
-                    <th>Index</th>
-                    <th>Symbol</th>
-                    <th>Price Range</th>
-                    <th>Count</th>
-                </tr>
-                {
-                    data.map((obj, index) => (
-                        <tr key={index}>
-                            <td>{index}</td>
-                            <td>{obj.symbol}</td>
-                            <td>{obj.priceChange}</td>
-                            <td>{obj.count}</td>
-                        </tr>
-                    ))
-                }
+                    <tr>
+                        <td>Index</td>
+                        <td>Symbol</td>
+                        <td>Price Range</td>
+                        <td>Count</td>
+                    </tr>
+                    {
+                        data.map((item, index)=>{
+                            return (
+                                <tr key={index}>
+                                    <td>{index}</td>
+                                    <td>{item.symbol}</td>
+                                    <td>{item.priceChange}</td>
+                                    <td>{item.count}</td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </table>
-            <br/>
             <div>
-                Symbol : <input type="text" id="txt" onChange={(event)=> setTextField(event.target.value)}/>
-                <input type="button" onClick={()=>{
-                    fetchSymbol();
-                }} value={"Submit"}/>
+                <br/>
+                Symbol: <input type="text" id={"txtField"} onChange={updateField}/>
+                <input type="button" value="Submit" onClick={fetchSymbol}/>
                 {
-                    symblData?(
-                        <table id="fetchTbl">
+                    symbolData?(
+                        <table>
                             <tbody>
                             <tr>
-                                <th>Symbol</th>
-                                <th>Price Range</th>
-                                <th>Count</th>
+                                <td>{symbolData.symbol}</td>
+                                <td>{symbolData.priceChange}</td>
+                                <td>{symbolData.count}</td>
                             </tr>
-                            {
-                                <tr>
-                                    <td>{symblData.symbol}</td>
-                                    <td>{symblData.priceChange}</td>
-                                    <td>{symblData.count}</td>
-                                </tr>
-                            }
                             </tbody>
                         </table>
                     ):null
@@ -92,7 +99,6 @@ const TableFunc = () => {
             </div>
         </>
     )
-
 }
 
 export default TableFunc;
