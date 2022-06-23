@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import axios from "axios";
 
 const TableFunc = () => {
 
@@ -13,18 +14,13 @@ const TableFunc = () => {
     },[]);
 
     useEffect(()=>{
+
         sliceIt();
     },[completeData]);
 
-
-
-    const fetchFirst =()=> {
-        fetch("https://api2.binance.com/api/v3/ticker/24hr")
-            .then(resp=>resp.json())
-            .then(data=>{
-                    setCompleteData(data);
-                }
-            )
+    const fetchFirst = async()=> {
+        const resp = await axios.get("https://api2.binance.com/api/v3/ticker/24hr");
+        setCompleteData(resp.data);
     }
     const sliceIt =(flag)=>{
         let getTable = document.querySelector("table");
@@ -34,15 +30,12 @@ const TableFunc = () => {
     const fetchItAgain =()=> {
         sliceIt(true);
     }
-
-
-    function updateField() {
+    const updateField =()=> {
         if(document.getElementById("txtField").value != null){
             setText(document.getElementById("txtField").value);
         }
     }
-
-    function fetchSymbol() {
+    const fetchSymbol =()=> {
         var url = "https://api2.binance.com/api/v3/ticker/24hr?symbol=";
         if(text!=""){
             url = url+text;
@@ -57,7 +50,7 @@ const TableFunc = () => {
     return(
         <>
             <h1>Functional Component</h1>
-            <table id="tbl">
+            <table id="tbl" onClick={fetchItAgain}>
                 <tbody>
                     <tr>
                         <td>Index</td>
