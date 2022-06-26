@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from "react";
+import axios from "axios";
+import SearchBox from "../searchBox/searchBox";
 
 const TodoList =() =>{
 
     const [completeData, setCompleteData] = useState([]);
+    const [completeDataDup, setCompleteDataDup] = useState([]);
     const [toDoData, setToDoData] = useState(new Map());
 
 
@@ -11,7 +14,9 @@ const TodoList =() =>{
             .then(resp => resp.json())
             .then(data => {
                 setCompleteData(data.slice(0,3));
+                setCompleteDataDup(data.slice(0,3));
             });
+
     }, []);
 
     useEffect(()=>{
@@ -29,8 +34,11 @@ const TodoList =() =>{
 
     }, [completeData]);
 
+
     return(
         <>
+            <SearchBox completeData = {completeData} setter = {setCompleteData} completeDataDup = {completeDataDup}/>
+            <br/><br/><br/><br/><br/>
             <table>
                 <tbody>
                 <tr>
@@ -48,7 +56,7 @@ const TodoList =() =>{
                                 <td>{item.address.city}</td>
                                 <td>
                                     <ul>
-                                        {   toDoData.size > 0 ? (
+                                        {  toDoData && toDoData.size > 0 ? (
                                                 toDoData.get(item.id).map(arr => (
                                                     <li key={arr.id}> {arr.title} </li>
                                                 ))
